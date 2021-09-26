@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="DH Objects">
+    <title>DH Object Finder</title>
+    <link rel="icon" href="./img/favicon.png">
+    <link rel="apple-touch-icon" href="./img/icon152.png">
+    <link rel="apple-touch-icon" href="./img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:100,300,400,500,700,900&amp;subset=japanese" rel="stylesheet" nonce="">  
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Roboto:100,300,400,500,700,900&amp;lang=ja" rel="stylesheet" nonce="">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./js/sw.js')
+        .then((reg) => {
+            console.log('Service worker registered.', reg);
+        });
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <a href="/">
+            <img src="./img/DH.svg" alt="logo">
+            <h1>Object Finder</h1>
+        </a>
+    </header>
+    <section class="pre">
+        <p>You can search from all the objects that the Destination Home team has found and stored so far!<a href="releasenotes.html"><span class="material-icons">text_snippet</span>Release Notes</a></p>
+        <p>We have <span id="datacount" v-cloak>{{datacount.length}}</span> objects now!</p>
+    </section>
+
+    <div id="app">
+        <section id="search">
+            <label>Type</label>
+            <select id="type" v-model="selected">
+                <option disabled value="">Please select one</option>
+                <option value="">All</option>
+                <option v-for="item in types" v-bind:key="item.type">{{ item.type }}</option>
+            </select>
+            <label>Keyword</label>
+            <input type="text" v-model="keyword">
+            <button v-on:click="search">Search</button>
+        </section>
+        <spinner v-show="isLoading"></spinner>
+        <p class="resultcount"><span v-cloak>{{results.length}}</span> object(s) found!</p>
+        <section id="result">
+            <table>
+                <thead>
+                    <tr>
+                        <th>IMG</th>
+                        <th>HASH</th>
+                        <th>UUID</th>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>URI</th>
+                        <th>Year</th>
+                    </tr>
+                </thead>
+                <tbody v-cloak>
+                    <tr v-for="item in getItems" v-bind:key="item.hash">
+                        <td><img v-bind:src='"./thumb/large/" + item.uuid + ".png"'  :alt="item.name" @error="noImage"/></td>
+                        <td>{{ item.hash }}</td>
+                        <td>{{ item.uuid }}</td>
+                        <td>{{ item.type }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.uri }}</td>
+                        <td>{{ item.year }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <nav aria-label="Page navigation">
+            <paginate
+            :page-count="getPageCount"
+            :page-range="3"
+            :margin-pages="2"
+            :click-handler="clickCallback"
+            :prev-text="'&laquo;'"
+            :next-text="'&raquo;'"
+            :container-class="'pagination'"
+            :page-class="'page-item'">
+            </paginate>
+        </nav>
+    </div>
+    
+    <footer>
+        <div class="wrap">
+            <h3>DISCLAIMER</h3>
+            <p>We are not affiliated with Sony Interactive Entertainment (SIE) or any other game developers licensed by SIE. This project is purely for preservation and educational purposes, our team does not accept ANY forms of donations nor any form of compensation.</p>
+            <hr>
+            <address>© All rights Reserved Destination Home.</address>
+        </div>
+    </footer>
+    <div class="bgarea">
+        <ul class="objects">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <script src="./js/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuejs-paginate@2.1.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.17.1/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-simple-spinner@1.2.8/dist/vue-simple-spinner.min.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+</html>
+
