@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Music DH Objects</title>
+  <link rel="icon" href="./img/favicon.png">
+  <link rel="apple-touch-icon" href="./img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:100,300,400,500,700,900&amp;subset=japanese" rel="stylesheet" nonce="">  
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Roboto:100,300,400,500,700,900&amp;lang=ja" rel="stylesheet" nonce="">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+<body>
+    <header>
+        <a href="/">
+            <img src="./img/DH.svg" alt="logo">
+            <h1>Music Player</h1>
+        </a>
+    </header>
+    <section class="pre">
+        <a href="index.html"><span class="material-icons">arrow_back</span>Go Back Database</a>
+    </section>
+    <div id="musicapp">
+
+        <section class="nowplaying">
+            <v-card
+                :loading="loading"
+                class="mx-auto my-12"
+                max-width="374"
+            >
+                <template slot="progress">
+                <v-progress-linear
+                    color="deep-purple"
+                    height="10"
+                    indeterminate
+                ></v-progress-linear>
+                </template>
+
+                <v-img
+                height="250"
+                src="./img/noimage.png"
+                ></v-img>
+
+                <v-card-title>Check it out</v-card-title>
+
+                <v-card-text>
+                    <div>BGM of the public space "The Playground"</div>
+                </v-card-text>
+
+                <v-divider class="mx-4"></v-divider>
+
+                <v-card-actions>
+                    <v-btn color="deep-purple lighten-2" text @click="reserve">
+                        play
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </section>
+
+        <section class="musiclist">
+            <v-card class="mx-auto" max-width="374" tile>
+                <v-list dense>
+                <v-subheader>SONG LIST</v-subheader>
+                <v-list-item-group
+                    v-model="selectedItem"
+                    color="primary"
+                >
+                    <v-list-item
+                    v-for="item in songlist"
+                    :key="i"
+                    >
+                    <v-list-item-icon>
+                        <v-icon v-text="item.icon"></v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title v-text="item.title"></v-list-item-title>
+                    </v-list-item-content>
+                    </v-list-item>
+                </v-list-item-group>
+                </v-list>
+            </v-card>
+        </section>
+    </div>
+
+    
+    <footer>
+        <div class="wrap">
+            <h3>DISCLAIMER</h3>
+            <p>We are not affiliated with Sony Interactive Entertainment (SIE) or any other game developers licensed by SIE. This project is purely for preservation and educational purposes, our team does not accept ANY forms of donations nor any form of compensation.</p>
+            <hr>
+            <address>© All rights Reserved Destination Home.</address>
+        </div>
+    </footer>
+    <div class="bgarea">
+        <ul class="objects">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <script src="./js/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="./js/music.js"></script>
+</body>
+</html>
