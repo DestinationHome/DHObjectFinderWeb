@@ -1,6 +1,7 @@
 {
+    "lang": "en",
     "name":"DH Objects",
-    "short_name":"DH Objects",
+    "short_name":"DHObj",
     "icons": [{
         "src": "/img/icon192.png",
         "sizes":"192x192",
