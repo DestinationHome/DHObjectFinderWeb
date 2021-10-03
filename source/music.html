@@ -42,15 +42,29 @@
                     height="250"
                     src="./img/noimage.png"
                     ></v-img>
-                    <v-slider v-model="perTime"
-                    ></v-slider>
+                    <v-slider 
+                    v-model="perTime"
+                    min="0"
+                    max="1000000"
+                    class="audio-seeker"
+                    v-if="src"
+                    :value="parseInt((currentTime / duration) * 1000000) || 0"
+                    @input="seek($event)"
+                    @focus="seekerFocused = true"
+                    @blur="seekerFocused = false"
+                    >
+
+                    </v-slider>
                     <v-card-title>Check it out</v-card-title>
 
                     <v-card-text>
                         <div>BGM of the public space "The Playground"</div>
                     </v-card-text>
 
-                    <v-divider class="mx-4"></v-divider>
+                    <v-divider 
+                    class="mx-4"
+                    >
+                    </v-divider>
                         {{currentTime}}/{{duration}}
                     
                     <v-card-actions>

@@ -11,8 +11,9 @@ new Vue({
       duration: 0,
       perTime: 0,
       isPlaying: false,
+      seekerFocused: false,
       src: "./music/Check_It_Out.mp3",
-      vol: 100
+      vol: 1
     },
     vuetify: new Vuetify(),
     mounted: function () {
@@ -25,6 +26,17 @@ new Vue({
             this.currentTime = this.audio.currentTime;
         });
     },
+    watch:{
+        playing(value) {
+            if (value) {
+              return this.$refs.audio.play();
+            }
+            this.$refs.audio.pause();
+        },
+        volume() {
+            this.muted = false;
+        }
+    },
     methods:{
         play: function(){
             this.audio.play();
@@ -35,10 +47,19 @@ new Vue({
             this.isPlaying = false;
         },
         skipPrev: function(){},
-        skipNext: function(){}
+        skipNext: function(){},
+        setVolume(value) {
+            this.volume = value;
+            this.$refs.audio.volume = value / 100;
+        }
     },
     computed:{
         volchange: function(){
+            if (!this.vol) return;
+            volume = parseFloat(volume) || 0.0;
+            volume = (volume < 0) ? 0 : volume;
+            volume = (volume > 1) ? 1 : volume;
+            this.vol.gain.value = volume;
             this.audio.volume = this.vol;
         }
     },

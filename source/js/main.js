@@ -1,6 +1,5 @@
 var docdoc =[];
 Vue.component('paginate', VuejsPaginate)
-const Spinner = window.VueSimpleSpinner;
 function getDb(){
     return $.getJSON("data/database1.json").promise();
 }
@@ -9,6 +8,7 @@ getDb().done((data) => {
     docdoc = data;
     var result = new Vue({
         el: '#app',
+        vuetify: new Vuetify(),
         data:{
             types:[
                 {"type":"Animation"},
@@ -46,12 +46,22 @@ getDb().done((data) => {
                 {"type":"Minigame"},
                 {"type":"Other"}
             ],
+            headers:[
+                {text:"IMG",value:"img"},
+                {text:"HASH",value:"hash"},
+                {text:"UUID",value:"uuid"},
+                {text:"Type",value:"type"},
+                {text:"Name",value:"name"},
+                {text:"Description",value:"description"},
+                {text:"Year",value:"year"},
+            ],
             keyword:'',
             selected:'',
             results:docdoc,
             parPage: 30,
             currentPage: 1,
-            isLoading: true
+            isLoading: true,
+            datacount: data
         },
         methods:{
             clickCallback: function (pageNum) {
@@ -91,18 +101,6 @@ getDb().done((data) => {
             getPageCount: function() {
                 return Math.ceil(this.results.length / this.parPage);
             }
-        },
-        components: {
-            Spinner
-        },
-        mounted:function(){
-            this.isLoading = false;
-        }
-    })
-    var datacount = new Vue({
-        el: '#datacount',
-        data:{
-            datacount: data
         }
     })
 
