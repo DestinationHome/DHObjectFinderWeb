@@ -1,5 +1,4 @@
 var docdoc =[];
-Vue.component('paginate', VuejsPaginate)
 function getDb(){
     return $.getJSON("data/database1.json").promise();
 }
@@ -11,40 +10,40 @@ getDb().done((data) => {
         vuetify: new Vuetify(),
         data:{
             types:[
-                {"type":"Animation"},
-                {"type":"Companion"},
-                {"type":"Female Feet"},
-                {"type":"Female Glasses"},
-                {"type":"Female Hair"},
-                {"type":"Female Hands"},
-                {"type":"Female Hat"},
-                {"type":"Female Headphones"},
-                {"type":"Female JewelBothEars"},
-                {"type":"Female JewelLeftEar"},
-                {"type":"Female JewelRightEar"},
-                {"type":"Female Leg"},
-                {"type":"Female Leg Feet"},
-                {"type":"Female Outfit"},
-                {"type":"Female Tors"},
-                {"type":"Furniture"},
-                {"type":"Locomotion"},
-                {"type":"Male FacialHair"},
-                {"type":"Male Feet"},
-                {"type":"Male Glasses"},
-                {"type":"Male Hair"},
-                {"type":"Male Hands"},
-                {"type":"Male Hat"},
-                {"type":"Male Headphones"},
-                {"type":"Male JewelBothEars"},
-                {"type":"Male JewelLeftEar"},
-                {"type":"Male JewelRightEar"},
-                {"type":"Male Leg"},
-                {"type":"Male Leg Feet"},
-                {"type":"Male Outfit"},
-                {"type":"Male Tors"},
-                {"type":"Male Torso"},
-                {"type":"Minigame"},
-                {"type":"Other"}
+                "Animation",
+                "Companion",
+                "Female Feet",
+                "Female Glasses",
+                "Female Hair",
+                "Female Hands",
+                "Female Hat",
+                "Female Headphones",
+                "Female JewelBothEars",
+                "Female JewelLeftEar",
+                "Female JewelRightEar",
+                "Female Leg",
+                "Female Leg Feet",
+                "Female Outfit",
+                "Female Tors",
+                "Furniture",
+                "Locomotion",
+                "Male FacialHair",
+                "Male Feet",
+                "Male Glasses",
+                "Male Hair",
+                "Male Hands",
+                "Male Hat",
+                "Male Headphones",
+                "Male JewelBothEars",
+                "Male JewelLeftEar",
+                "Male JewelRightEar",
+                "Male Leg",
+                "Male Leg Feet",
+                "Male Outfit",
+                "Male Tors",
+                "Male Torso",
+                "Minigame",
+                "Other"
             ],
             headers:[
                 {text:"IMG",value:"img"},
@@ -53,20 +52,19 @@ getDb().done((data) => {
                 {text:"Type",value:"type"},
                 {text:"Name",value:"name"},
                 {text:"Description",value:"description"},
+                {text:"URI",value:"uri"},
                 {text:"Year",value:"year"},
             ],
             keyword:'',
             selected:'',
             results:docdoc,
-            parPage: 30,
+            perPage: 30,
             currentPage: 1,
+            pageCount:0,
             isLoading: true,
             datacount: data
         },
         methods:{
-            clickCallback: function (pageNum) {
-                this.currentPage = Number(pageNum);
-            },
             search: function(){
                 var filtered = [];
                 for(var i in data) {
@@ -94,12 +92,19 @@ getDb().done((data) => {
         },
         computed: {
             getItems: function() {
-                let current = this.currentPage * this.parPage;
-                let start = current - this.parPage;
+                let current = this.currentPage * this.perPage;
+                let start = current - this.perPage;
                 return this.results.slice(start, current);
             },
             getPageCount: function() {
-                return Math.ceil(this.results.length / this.parPage);
+                return Math.ceil(this.results.length / this.perPage);
+            },
+            getImagePath:function(){
+                let uuid = this.results.uuid;
+                const imgpash = "./thumb/large/";
+                const file = ".png";
+                let path = imgpash + uuid + file;
+                return path;
             }
         }
     })

@@ -12,10 +12,10 @@
     <link rel="apple-touch-icon" href="./img/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:100,300,400,500,700,900&amp;subset=japanese" rel="stylesheet" nonce="">  
     <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Roboto:100,300,400,500,700,900&amp;lang=ja" rel="stylesheet" nonce="">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/style.css">
     <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
@@ -43,73 +43,63 @@
                     <p>We have <span id="datacount" v-cloak>{{datacount.length}}</span> objects now!</p>
                 </v-container>
                 <section id="search">
-                    <label>Type</label>
-                    <select id="type" v-model="selected">
-                        <option disabled value="">Please select one</option>
-                        <option value="">All</option>
-                        <option v-for="item in types" v-bind:key="item.type">{{ item.type }}</option>
-                    </select>
-                    <label>Keyword</label>
-                    <input type="text" v-model="keyword">
-                    <button v-on:click="search">Search</button>
+                    <v-select id="type" 
+                        label="Type" 
+                        filled 
+                        background-color="rgba(255,255,255,.3)"
+                        v-model="selected"
+                        rounded
+                        :items="types"
+                        clearable
+                        color="white"
+                    >
+                    </v-select>
+                    <v-text-field
+                        v-model="keyword"
+                        label="Keyword"
+                        color="white"
+                        rounded
+                        background-color="rgba(255,255,255,.3)"
+                        filled
+                    >
+                    </v-text-field>
+                    <v-text-field
+                        :value="perPage"
+                        label="Items per page"
+                        color="white"
+                        filled
+                        rounded
+                        type="number"
+                        background-color="rgba(255,255,255,.3)"
+                        min="15"
+                        max="100"
+                        @input="perPage = parseInt($event, 10)"
+                    ></v-text-field>
+                    <button class="searchbtn" v-on:click="search">Search</button>
                 </section>
                 <p class="resultcount"><span v-cloak>{{results.length}}</span> object(s) found!</p>
-                <!-- <section id="result">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>IMG</th>
-                                <th>HASH</th>
-                                <th>UUID</th>
-                                <th>Type</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>URI</th>
-                                <th>Year</th>
-                            </tr>
-                        </thead>
-                        <tbody v-cloak>
-                            <tr v-for="item in getItems" v-bind:key="item.hash">
-                                <td><img v-bind:src='"./thumb/large/" + item.uuid + ".png"'  :alt="item.name" @error="noImage"/></td>
-                                <td>{{ item.hash }}</td>
-                                <td>{{ item.uuid }}</td>
-                                <td>{{ item.type }}</td>
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.description }}</td>
-                                <td>{{ item.uri }}</td>
-                                <td>{{ item.year }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section> -->
                 <section id="result">
                     <v-data-table
                     :headers="headers"
                     :items="results"
+                    :page.sync="currentPage"
+                    :items-per-page="perPage"
+                    :search="keyword"
+                    hide-default-footer
+                    @page-count="pageCount = $event"
                     >
-                    <template slot:="results">
-                        <td><img v-bind:src='"./thumb/large/" + results.uuid + ".png"'  :alt="results.name" @error="noImage"/></td>
-                        <td>{{ results.hash }}</td>
-                        <td>{{ results.uuid }}</td>
-                        <td>{{ results.type }}</td>
-                        <td>{{ results.name }}</td>
-                        <td>{{ results.description }}</td>
-                        <td>{{ results.uri }}</td>
-                        <td>{{ results.year }}</td>
-                    </template>   
+                    <template v-slot:item.img="{ item }">
+                        <img :src="'./thumb/large/' + item.uuid + '.png'" @error="noImage" />
+                    </template>
                     </v-data-table>
                 </section>
-                <nav aria-label="Page navigation">
-                    <paginate
-                    :page-count="getPageCount"
-                    :page-range="3"
-                    :margin-pages="2"
-                    :click-handler="clickCallback"
-                    :prev-text="'&laquo;'"
-                    :next-text="'&raquo;'"
-                    :container-class="'pagination'"
-                    :page-class="'page-item'">
-                    </paginate>
+                <nav>
+                    <div class="text-center pt-2">
+                        <v-pagination
+                          v-model="currentPage"
+                          :length="pageCount"
+                        ></v-pagination>
+                    </div>
                 </nav>
             </v-main>
             <v-footer tag="footer" dark color="#1e1e1e">
@@ -137,12 +127,10 @@
         </v-app>
     </div>
     <script src="./js/jquery-3.6.0.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@0.17.1/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/vuejs-paginate@2.1.0"></script>
     <script src="./js/main.js"></script>
 </body>
 </html>

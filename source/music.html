@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:100,300,400,500,700,900&amp;subset=japanese" rel="stylesheet" nonce="">  
   <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Roboto:100,300,400,500,700,900&amp;lang=ja" rel="stylesheet" nonce="">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="./css/style.css">
   <style>
@@ -21,13 +22,14 @@
   </style>
 </head>
 <body>
-    <v-app id="musicapp" :style="{ background: $vuetify.theme.themes.light.background }">
-        <v-app-bar tag="header" color="#08a5e9">
+    <div id="musicapp">
+    <v-app>
+        <header>
             <a href="/">
                 <img src="./img/DH.svg" alt="logo">
-                <h1>Music Player</h1>
+                <h1>Object Finder</h1>
             </a>
-        </v-app-bar>
+        <header>
         <v-main>
             <section class="pre">
                 <a href="index.html"><span class="material-icons">arrow_back</span>Go Back Database</a>
@@ -36,14 +38,17 @@
                 <v-card
                     class="mx-auto my-12"
                     max-width="374"
+                    align="center"
                 >
 
                     <v-img
                     height="250"
                     src="./img/noimage.png"
                     ></v-img>
+                    <v-card-title align="center">{{ songTitle }}</v-card-title>
+                    <v-card-subtitle align="center">{{desc}}</v-card-subtitle>
+                    <audio src="src"></audio>
                     <v-slider 
-                    v-model="perTime"
                     min="0"
                     max="1000000"
                     class="audio-seeker"
@@ -52,22 +57,18 @@
                     @input="seek($event)"
                     @focus="seekerFocused = true"
                     @blur="seekerFocused = false"
+                    :track-color="white"
                     >
-
                     </v-slider>
-                    <v-card-title>Check it out</v-card-title>
-
-                    <v-card-text>
-                        <div>BGM of the public space "The Playground"</div>
-                    </v-card-text>
-
+                    <span>
+                    {{currentMinsec}}/{{durationMinsec}}
+                    </span>
                     <v-divider 
                     class="mx-4"
                     >
                     </v-divider>
-                        {{currentTime}}/{{duration}}
                     
-                    <v-card-actions>
+                    <v-card-actions class="player-btn">
                         <v-btn color="purple" icon fab large @click="skipPrev">
                             <span class="material-icons">
                                 skip_previous
@@ -88,8 +89,15 @@
                                 skip_next
                             </span>    
                         </v-btn>
+                    </v-card-actions>
+                    <v-card-actions>
                         <v-slider
                             v-model="vol"
+                            class="volume-slider"
+                            thumb-label
+                            max="100"
+                            min="0"
+                            prepend-icon="mdi-volume-high"
                         ></v-slider>
                     </v-card-actions>
                 </v-card>
@@ -105,6 +113,8 @@
                         <v-list-item
                         v-for="item in songlist"
                         :key="item.id"
+                        v-bind:value="item.id"
+                        @click="setNewSong"
                         >
                         <v-list-item-icon>
                             <span class="material-icons">
@@ -134,17 +144,17 @@
                 </ul>
             </div>
         </v-main>
-        <v-footer>
-            <div class="wrap">
-                <h3>DISCLAIMER</h3>
-                <p>We are not affiliated with Sony Interactive Entertainment (SIE) or any other game developers licensed by SIE. This project is purely for preservation and educational purposes, our team does not accept ANY forms of donations nor any form of compensation.</p>
-                <hr>
-                <address>© All rights Reserved Destination Home.</address>
-            </div>
+        <v-footer tag="footer" dark color="#1e1e1e">
+            <v-card class="wrap">
+                <v-card-title>DISCLAIMER</v-card-title>
+                <v-card-text>We are not affiliated with Sony Interactive Entertainment (SIE) or any other game developers licensed by SIE. This project is purely for preservation and educational purposes, our team does not accept ANY forms of donations nor any form of compensation.</v-card-text>
+                <v-divider name="hr"></v-divider>
+                <v-card-text>© All rights Reserved Destination Home.</v-card-text>
+            </v-card>
         </v-footer>
     </v-app>
+    </div>
     <script src="./js/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script src="./js/music.js"></script>

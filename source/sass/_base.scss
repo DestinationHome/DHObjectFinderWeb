@@ -3,7 +3,7 @@
 body{
     position: relative;
     font-family: 'Noto Sans JP', Arial, Helvetica, sans-serif;
-    font-weight: 200;
+    font-weight: 300;
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -180,6 +180,7 @@ section{
     &#search{
         margin: 20px auto 50px;
         padding: 1em;
+        font-weight: normal;
         border-radius: 10px;
         background: rgba($color: #FFF, $alpha: .25);
         -webkit-backdrop-filter: blur(6px);
@@ -187,22 +188,15 @@ section{
         label{
             display: block;
             color: #fff;
-            font-weight: bold;
+            font-weight: normal;
         }
-        input[type=text]{
+        input[type=text],input[type=number]{
             display: block;
             width: 100%;
-            margin: 4px 0 10px;
-            padding: .5em;
             border-radius: 5px;
-            background: rgba(255,255,255,.3);
-            border: 2px solid rgba(255,255,255,.0);
+            // background: rgba(255,255,255,.3);
+            // border: 2px solid rgba(255,255,255,.0);
             color: #043f77;
-            &:focus{
-                display: block;
-                border: 2px solid con.$maincolor;
-                outline: 0;
-            }
         }
         select{
             width: 100%;
@@ -211,24 +205,21 @@ section{
             padding: .5em .4em;
             border: 0;
             border-radius: 5px;
-            border: 2px solid rgba($color: #fff, $alpha: 0);
-            background: rgba(255,255,255,.3);
             color: #043f77;
-            &:focus{
-                display: block;
-                border: 2px solid con.$maincolor;
-                outline: 0;
-            }
         }
         button{
-            width: 100%;
-            height: 50px;
-            margin-top: 1em;
-            border-radius: 52px;
-            border: 0;
-            background: rgba(0, 116, 224, .8);
-            color: #fff;
+            border-color: #fff;
+            &.searchbtn{
+                width: 100%;
+                height: 50px;
+                margin-top: 1em;
+                border-radius: 52px;
+                border: 0;
+                background: rgba(0, 116, 224, .8);
+                color: #fff;
+            }
         }
+        
     }
     &#result{
         padding-bottom: 1em;
@@ -238,7 +229,7 @@ section{
             min-width: 100%;
             border-radius: 6px;
             background: #fff;
-            color: #000;
+            color: #fff;
             overflow-x: auto;
             thead{
                 width: 100%;
@@ -277,6 +268,7 @@ section{
             tbody{
                 width: 100%;
                 font-size: 14px;
+                color: #000;
                 tr{
                     &:nth-child(even){
                         background: rgb(233, 243, 252);
@@ -289,6 +281,28 @@ section{
                     }
                 }
             }
+        }
+        .theme--light.v-data-table>.v-data-table__wrapper>table>thead>tr>th{
+            color: #fff;
+            font-size: 1rem;
+        }
+        .v-data-table-header-mobile__wrapper .v-select .v-chip{
+            background-color: #fff;
+            color: con.$maincolor;
+            margin: 4px;
+        }
+        .v-label{
+            color: #fff;
+            &.v-label--active.theme--light{
+                color: #fff;
+            }
+        }
+        .v-data-table__mobile-row__header{
+            min-width: 4em;
+            color: con.$maincolor;
+        }
+        .v-data-table__mobile-row__cell{
+            font-size: 13px;
         }
     }
     &.rnotes{
@@ -303,9 +317,19 @@ section{
             border-bottom: 1px solid #fff;
         }
     }
+    &.nowplaying{
+        .player-btn{
+            display: flex;
+            justify-content: center;
+        }
+    }
 }
 nav{
+    width: 90%;
     margin: 0 auto 3em;
+    .v-pagination__item{
+        font-size: 0.8rem;
+    }
     .pagination{
         display: flex;
         justify-content: center;
