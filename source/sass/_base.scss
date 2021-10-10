@@ -384,6 +384,9 @@ footer{
         margin: 0 auto;
         font-size: 14px;
     }
+    .v-sheet.v-card:not(.v-sheet--outlined){
+        box-shadow: none;
+    }
 }
 @media screen and (min-width: 768px) {
     section{
