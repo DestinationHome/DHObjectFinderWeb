@@ -58,6 +58,7 @@ var result = new Vue({
         pageCount:0,
     },
     beforeCreate: function () {
+        this.loading = true;
         axios.get('data/database1.json')
             .then(function (response) {
                 result.results = response.data;
@@ -67,7 +68,7 @@ var result = new Vue({
                 console.log(error);
             });
     },
-    mounted:function(){
+    updated:function(){
         const load = () => {
             this.loading = false;
         }
