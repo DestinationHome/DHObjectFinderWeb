@@ -54,7 +54,7 @@
             <v-main v-show="!loading">
                 <v-container tag="section" class="pre">
                     <p>You can search from all the objects that the Destination Home team has found and stored so far!<a href="releasenotes.html"><span class="material-icons">text_snippet</span>Release Notes</a></p>
-                    <p>We have <span id="datacount" v-cloak>{{results.length}}</span> objects now!</p>
+                    <p v-cloak>We have <span id="datacount">{{datacount}}</span> objects now!</p>
                 </v-container>
                 <section id="search">
                     <v-select id="type" 

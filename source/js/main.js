@@ -55,6 +55,7 @@ var result = new Vue({
         results:[],
         perPage: 30,
         currentPage: 1,
+        datacount:"",
         pageCount:0,
     },
     beforeCreate: function () {
@@ -73,6 +74,7 @@ var result = new Vue({
             this.loading = false;
         }
         load();
+        this.datacount = gridData.length;
     },
     methods:{
         search: function(){
