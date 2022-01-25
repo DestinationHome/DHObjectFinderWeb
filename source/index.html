@@ -37,10 +37,24 @@
                     <h1>Object Finder</h1>
                 </a>
             <header>
-            <v-main>
+            <v-main v-show="loading">
+                <v-container  fluid v-show="loading">
+                    <v-row style="height: 450px; width: 50%; margin: 0 auto;"
+                    justify="center" align-content="center"
+                    >
+                    <v-col>
+                        <v-card class="pt-12 pb-8" flat>
+                            <spinner></spinner>
+                            <p class="text-center mt-3">Database Loading...</p>
+                        </v-card>
+                    </v-col>
+                    </v-row>
+                </v-container>
+            </v-main>
+            <v-main v-show="!loading">
                 <v-container tag="section" class="pre">
                     <p>You can search from all the objects that the Destination Home team has found and stored so far!<a href="releasenotes.html"><span class="material-icons">text_snippet</span>Release Notes</a></p>
-                    <p>We have <span id="datacount" v-cloak>{{datacount.length}}</span> objects now!</p>
+                    <p>We have <span id="datacount" v-cloak>{{results.length}}</span> objects now!</p>
                 </v-container>
                 <section id="search">
                     <v-select id="type" 
@@ -101,7 +115,7 @@
                     </div>
                 </nav>
             </v-main>
-            <v-footer tag="footer" elevation="0" dark color="#1e1e1e">
+            <v-footer tag="footer" elevation="0" dark color="#1e1e1e" v-cloak>
                 <v-card class="wrap">
                     <v-card-title>DISCLAIMER</v-card-title>
                     <v-card-text>We are not affiliated with Sony Interactive Entertainment (SIE) or any other game developers licensed by SIE. This project is purely for preservation and educational purposes, our team does not accept ANY forms of donations nor any form of compensation.</v-card-text>
@@ -125,12 +139,13 @@
             </div>
         </v-app>
     </div>
-    <script src="./js/jquery-3.6.0.min.js"></script>
+    <!-- <script src="./js/jquery-3.6.0.min.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@0.17.1/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-simple-spinner@1.2.8/dist/vue-simple-spinner.min.js"></script>
     <script src="./js/main.js"></script>
 </body>
 </html>
